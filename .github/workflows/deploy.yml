@@ -1,7 +1,8 @@
 name: Deploy Pipeline
+
 on:
   push:
-    branches: [main]
+    branches: [develop, main]
 
 jobs:
   build:
@@ -11,7 +12,18 @@ jobs:
       - name: Build application
         run: echo "Add your build steps here"
 
+  deploy-dev:
+    if: github.ref == 'refs/heads/develop'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Dev
+        run: echo "TODO: add dev deployment steps (e.g. Azure CLI)"
+
   deploy-staging:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment: staging
@@ -21,6 +33,7 @@ jobs:
         run: echo "TODO: add staging deployment steps (e.g. Azure CLI)"
 
   deploy-production:
+    if: github.ref == 'refs/heads/main'
     needs: deploy-staging
     runs-on: ubuntu-latest
     environment: production
