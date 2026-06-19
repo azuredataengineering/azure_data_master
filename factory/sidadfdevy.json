@@ -1,0 +1,15 @@
+{
+	"name": "sidadfdevy",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "71c3f1c1-bdf7-426e-a23c-3f2f9d25beed",
+		"tenantId": "957de54a-fdba-4adf-9f57-5ac6bf0deac0"
+	}
+}
