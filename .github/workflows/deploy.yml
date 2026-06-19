@@ -4,6 +4,10 @@ on:
   push:
     branches: [develop, main]
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,27 +21,75 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: dev
+    env:
+      RESOURCE_GROUP: sid_grup
+      ADF_NAME: sidwdldevy
+      DATABRICKS_WORKSPACE: sidsadb
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to Dev
-        run: echo "TODO: add dev deployment steps (e.g. Azure CLI)"
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy ADF (dev)
+        run: |
+          echo "Deploying ADF artifacts from ./adf to $ADF_NAME in $RESOURCE_GROUP"
+          # TODO: az datafactory pipeline create / ARM template deploy once adf/ has pipeline JSON
+      - name: Deploy Databricks (dev)
+        run: |
+          echo "Deploying Databricks artifacts from ./adb to $DATABRICKS_WORKSPACE"
+          # TODO: databricks bundle deploy / workspace import once adb/ has notebooks
 
   deploy-staging:
     if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment: staging
+    env:
+      RESOURCE_GROUP: sid_grup
+      ADF_NAME: adf-stage-data
+      DATABRICKS_WORKSPACE: databricks_stage
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to Staging
-        run: echo "TODO: add staging deployment steps (e.g. Azure CLI)"
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy ADF (staging)
+        run: |
+          echo "Deploying ADF artifacts from ./adf to $ADF_NAME in $RESOURCE_GROUP"
+          # TODO: az datafactory pipeline create / ARM template deploy once adf/ has pipeline JSON
+      - name: Deploy Databricks (staging)
+        run: |
+          echo "Deploying Databricks artifacts from ./adb to $DATABRICKS_WORKSPACE"
+          # TODO: databricks bundle deploy / workspace import once adb/ has notebooks
 
   deploy-production:
     if: github.ref == 'refs/heads/main'
     needs: deploy-staging
     runs-on: ubuntu-latest
     environment: production
+    env:
+      RESOURCE_GROUP: sid_grup
+      ADF_NAME: adf-prod-sidu
+      DATABRICKS_WORKSPACE: databricks_prod
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to Production
-        run: echo "TODO: add production deployment steps (e.g. Azure CLI)"
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy ADF (production)
+        run: |
+          echo "Deploying ADF artifacts from ./adf to $ADF_NAME in $RESOURCE_GROUP"
+          # TODO: az datafactory pipeline create / ARM template deploy once adf/ has pipeline JSON
+      - name: Deploy Databricks (production)
+        run: |
+          echo "Deploying Databricks artifacts from ./adb to $DATABRICKS_WORKSPACE"
+          # TODO: databricks bundle deploy / workspace import once adb/ has notebooks
