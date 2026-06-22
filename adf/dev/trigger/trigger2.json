@@ -1,0 +1,35 @@
+{
+	"name": "trigger2",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "2_copy_activity_triggger",
+				"type": "PipelineReference"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Minute",
+			"interval": 7,
+			"startTime": "2026-06-22T09:07:00Z",
+			"endTime": "2026-06-23T17:07:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": [
+				{
+					"type": "TumblingWindowTriggerDependencyReference",
+					"offset": "-0.00:02:00",
+					"referenceTrigger": {
+						"referenceName": "trigger1",
+						"type": "TriggerReference"
+					}
+				}
+			]
+		}
+	}
+}
