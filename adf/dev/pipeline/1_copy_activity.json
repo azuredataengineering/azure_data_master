@@ -98,6 +98,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "basics"
+		},
 		"annotations": [],
 		"lastPublishTime": "2026-06-06T00:08:53Z"
 	},
