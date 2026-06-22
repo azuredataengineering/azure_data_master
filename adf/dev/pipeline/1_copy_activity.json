@@ -1,5 +1,5 @@
 {
-	"name": "1stlearningpipe",
+	"name": "1_copy_activity",
 	"properties": {
 		"activities": [
 			{
@@ -89,6 +89,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
