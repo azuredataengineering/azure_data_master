@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Verify PR source is develop
         run: |
-          if [ "${{ github.head_ref }}" != "develop" ]; then
+          if [ "${{ github.head_ref }}" = "develop" ]; then
             echo "Pull requests into main are only allowed from the develop branch."
             echo "This PR is from '${{ github.head_ref }}'."
             exit 1
